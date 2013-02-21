@@ -64,8 +64,13 @@ elseif teacherInfluence == false
 end
 
 % Pre-allocate arrays.
-classGrades = zeros(NUMSTUDENTS / size(teacherSkills));
-teacherAverages = zeros(yearsToTest, size(teacherSkills));
+% class grades are as big as a single class (all students / number of
+% teachers)
+% teacher averages are the number of years testing occurs, by the number of
+% teachers
+classGrades = zeros(1, NUMSTUDENTS ./ size(teacherSkills,2));
+classSize = size(classGrades,2);
+teacherAverages = zeros(yearsToTest, size(teacherSkills,2));
 
 
 for i=2:yearsToTest+1 % for each year of testing
@@ -75,14 +80,15 @@ for i=2:yearsToTest+1 % for each year of testing
     assignedStudents = randperm(NUMSTUDENTS);
     
     
-    for j=1:size(teacherSkills) % for teach teacher,
+    for j=1:size(teacherSkills,2) % for teach teacher,
         
         % "These are the students I have in my class"
         % The j*whatnot is to jump to the next fraction of assignments
-        myStudents = assignedStudents(((j-1)*NUMSTUDENTS):(j*NUMSTUDENTS)); 
+        myStudents = ...
+            assignedStudents( (((j-1)*classSize)+1):(j*classSize) ); 
         
         
-        for k=1:size(classGrades) % for each student,
+        for k=1:classSize % for each student,
             
             % If we're using semi-self-influenced grading, set it up.
             % If we're not, just center the possible grade around good 'ol
@@ -105,6 +111,7 @@ for i=2:yearsToTest+1 % for each year of testing
             classGrades(k) = grades(i,myStudents(k));
             
         end % student loop
+        
         
         % Compile the class averages for each teacher for each year.
         teacherAverages(i-1,j) = mean(classGrades);
