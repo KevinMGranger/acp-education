@@ -16,6 +16,18 @@ TESTSTOTAKE=300;
 grades = [90 zeros(1,TESTSTOTAKE-1)];
 
 
+% Control Group
+
+for i=2:TESTSTOTAKE
+    grades(i)=taketest(75,1,1);
+end
+
+figure(1);
+plot(grades);
+xlabel('Test Number');
+ylabel('Grade');
+title('Non-influenced control group'); 
+
 
 % Illustrate the self-influencing trend issue
 
@@ -23,7 +35,7 @@ for i=2:TESTSTOTAKE
     grades(i)=taketest(grades(i-1),1,1);
 end
 
-figure(1);
+figure(2);
 plot(grades);
 xlabel('Test Number');
 ylabel('Grade');
@@ -39,7 +51,7 @@ for i=2:TESTSTOTAKE
         ,1,1);
 end
 
-figure(2);
+figure(3);
 plot(grades);
 xlabel('Test Number');
 ylabel('Grade');
