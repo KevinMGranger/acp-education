@@ -1,4 +1,4 @@
-function [grade] = taketest (mean, stddev)
+function [grade] = taketest (lastGrade, teacherInfluence, randomFuzzing)
 
 grade = mean + stddev.*randn;
 
